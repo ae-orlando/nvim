@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/neovim-%3E%3D0.10-57A143?logo=neovim&style=flat-square"
        alt="Neovim >= 0.10">
   <img src="https://img.shields.io/github/v/release/ae-orlando/NikaVim?style=flat-square&label=release"
-       alt="Release v3.1.2">
+                alt="Release v3.2.0">
   <img src="https://img.shields.io/github/last-commit/ae-orlando/NikaVim?style=flat-square&label=last%20commit"
        alt="Last Commit">
   <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square"

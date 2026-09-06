@@ -2,7 +2,7 @@
 
 All notable changes to this Neovim configuration are documented here.
 
-## [Unreleased] - 2026-09-06
+## [v3.2.0] - 2026-09-06
 
 ### 🛠️ Reliability
 - **Startup**: Load core autocommands, commands, health checks, and configuration-local modules exactly once
