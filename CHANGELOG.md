@@ -2,6 +2,21 @@
 
 All notable changes to this Neovim configuration are documented here.
 
+## [Unreleased] - 2026-09-06
+
+### 🛠️ Reliability
+- **Startup**: Load core autocommands, commands, health checks, and configuration-local modules exactly once
+- **Treesitter**: Adopt the current setup/start API and remove unsupported incremental-selection calls
+- **LSP**: Correct Mason dependencies and prevent duplicate attach handlers
+- **Formatting**: Make `FormatToggle` control Conform format-on-save behavior
+- **Plugins**: Guard optional Telescope native support and disable automatic DAP/LuaRocks installation
+- **Colorizer**: Add a scoped Neovim 0.11+ compatibility bridge for the upstream deprecated flatten helper
+- **Installation**: Harden setup and CI with isolated startup, health, lockfile, and syntax checks
+- **AI**: Make Copilot integrations opt-in with `NIKAVIM_ENABLE_AI=1`
+
+### 📚 Documentation
+- Updated setup, quick-start, keymap, troubleshooting, contribution, and readiness guidance
+
 ## [v3.1.3] - 2026-06-24
 
 ### 🐛 Bug Fixes

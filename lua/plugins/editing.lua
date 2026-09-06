@@ -77,8 +77,6 @@ return {
       "nvim-treesitter/nvim-treesitter",
     },
     config = function()
-      pcall(require, "plenery")
-
       require("refactoring").setup({})
     end,
   },

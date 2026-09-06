@@ -1,4 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
 # Post-Installation Setup Script for NikaVim
 
 echo "🚀 NikaVim Setup Wizard"
@@ -6,7 +10,7 @@ echo "====================="
 echo ""
 
 # Check if nvim is installed
-if ! command -v nvim &> /dev/null; then
+if ! command -v nvim >/dev/null 2>&1; then
     echo "❌ Neovim is not installed. Please install it first."
     echo "   Ubuntu/Debian: sudo apt install neovim"
     echo "   macOS: brew install neovim"
@@ -14,15 +18,22 @@ if ! command -v nvim &> /dev/null; then
     exit 1
 fi
 
+for command_name in git rg make; do
+    if ! command -v "$command_name" >/dev/null 2>&1; then
+        echo "❌ Required command not found: $command_name"
+        exit 1
+    fi
+done
+
 echo "✅ Neovim installed: $(nvim --version | head -n1)"
 echo ""
 
 # Check Python support
 echo "Checking Python support..."
-if python3 -c "import neovim" 2>/dev/null; then
-    echo "✅ Python neovim module found"
+if python3 -c "import pynvim" 2>/dev/null; then
+    echo "✅ Python pynvim module found"
 else
-    echo "⚠️  Installing Python neovim module..."
+    echo "⚠️  Installing Python pynvim module..."
     python3 -m pip install --user pynvim
 fi
 echo ""
@@ -32,56 +43,17 @@ echo "🔧 Installing plugins..."
 echo "Opening Neovim to install plugins (this may take a minute)..."
 echo ""
 
-nvim --headless +Lazy! +qall
+nvim --headless -u "$SCRIPT_DIR/init.lua" "+Lazy! sync" +qa
 
 echo ""
 echo "✅ Plugins installed!"
 echo ""
 
-# Offer to install LSP servers
-echo "Would you like to install language servers now? (y/n)"
-read -r install_lsp
-
-if [[ $install_lsp == "y" ]]; then
-    echo ""
-    echo "Popular language servers:"
-    echo "  1. lua_ls (Lua)"
-    echo "  2. pyright (Python)"
-    echo "  3. ts_ls (TypeScript/JavaScript)"
-    echo "  4. html (HTML)"
-    echo "  5. cssls (CSS)"
-    echo "  6. All of the above"
-    echo "  7. Skip"
-    echo ""
-    echo "Enter your choice (1-7):"
-    read -r choice
-
-    case $choice in
-        1)
-            nvim --headless +MasonInstall\ lua_ls +qall
-            ;;
-        2)
-            nvim --headless +MasonInstall\ pyright +qall
-            ;;
-        3)
-            nvim --headless +MasonInstall\ ts_ls +qall
-            ;;
-        4)
-            nvim --headless +MasonInstall\ html +qall
-            ;;
-        5)
-            nvim --headless +MasonInstall\ cssls +qall
-            ;;
-        6)
-            nvim --headless +MasonInstall\ lua_ls\ pyright\ ts_ls\ html\ cssls\ jsonls\ yamlls\ bashls\ clangd\ rust_analyzer +qall
-            ;;
-        7)
-            echo "Skipped"
-            ;;
-        *)
-            echo "Invalid choice"
-            ;;
-    esac
+# Open Mason only when explicitly requested. This keeps the script noninteractive by default.
+if [[ ${NIKAVIM_OPEN_MASON:-0} == "1" ]]; then
+    nvim -u "$SCRIPT_DIR/init.lua" +Mason
+else
+    echo "ℹ️  Run NIKAVIM_OPEN_MASON=1 ./setup.sh to open Mason for language-server installation."
 fi
 
 echo ""

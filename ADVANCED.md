@@ -244,7 +244,7 @@ rm -rf ~/.local/share/nvim/mason
 
 | Step | Action |
 |------|--------|
-| 1 | Check installed adapters: `:DapInstall` |
+| 1 | Check installed adapters in Mason or through the adapter's documented toolchain |
 | 2 | Verify `lua/plugins/debug.lua` has your language adapter |
 | 3 | Set a breakpoint first: `<Space>db` |
 | 4 | Start: `<Space>dc` |

@@ -19,14 +19,20 @@ return {
           markdown = { "prettier" },
           yaml = { "prettier" },
         },
-        format_on_save = {
-          timeout_ms = 500,
-          lsp_fallback = true,
-        },
+        format_on_save = function()
+          if not vim.g.autoformat_enabled then
+            return
+          end
+
+          return {
+            timeout_ms = 500,
+            lsp_format = "fallback",
+          }
+        end,
       })
 
       vim.keymap.set({ "n", "v" }, "<leader>fp", function()
-        require("conform").format({ async = true, lsp_fallback = true })
+        require("conform").format({ async = true, lsp_format = "fallback" })
       end, { desc = "Format code" })
     end,
   },
@@ -46,14 +52,32 @@ return {
         lua = { "luacheck" },
       }
 
+      local linter_commands = {
+        pylint = "pylint",
+        eslint_d = "eslint_d",
+        markdownlint = "markdownlint",
+        luacheck = "luacheck",
+      }
+
+      local function try_lint()
+        for _, linter_name in ipairs(lint.linters_by_ft[vim.bo.filetype] or {}) do
+          local command = linter_commands[linter_name]
+          if command and vim.fn.executable(command) ~= 1 then
+            return
+          end
+        end
+
+        lint.try_lint()
+      end
+
       vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
         callback = function()
-          pcall(lint.try_lint)
+          try_lint()
         end,
       })
 
       vim.keymap.set("n", "<leader>fl", function()
-        lint.try_lint()
+        try_lint()
       end, { desc = "Lint file" })
     end,
   },

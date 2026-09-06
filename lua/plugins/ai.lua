@@ -1,6 +1,9 @@
 return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
+    cond = function()
+      return vim.env.NIKAVIM_ENABLE_AI == "1"
+    end,
     branch = "canary",
     dependencies = {
       "github/copilot.vim",

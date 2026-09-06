@@ -4,17 +4,21 @@ Complete this checklist after installing NikaVim.
 
 ---
 
-## ⚡ Immediate Setup (5 minutes)
+## ⚡ Immediate Setup
 
-- [ ] **Install plugins**: Open Neovim (`nvim`) and let Lazy install everything
-  - Lazy auto-installs on first launch
-  - Wait for `✨ NikaVim ready!`
+Before installing, confirm that the host has a supported stable Neovim release,
+Git, a compiler or Make, `ripgrep`, and a working network connection. `fd` is
+recommended for file discovery.
+
+- [ ] **Install plugins**: Open Neovim (`nvim`) and let Lazy install the pinned plugins
+  - Wait for Lazy to finish
+  - Inspect `:Lazy` for failed tasks
   - Close Neovim (`:q`)
 
 - [ ] **Verify installation**:
   ```bash
-  nvim --version        # Should be 0.10+
-  nvim +checkhealth     # Check for issues
+  nvim --version
+  nvim --headless -u init.lua "+checkhealth nikavim" +qa
   ```
 
 ---
@@ -23,15 +27,17 @@ Complete this checklist after installing NikaVim.
 
 - [ ] **Install language servers** for your languages:
   ```bash
-  # Interactive (recommended)
-  nvim +Mason
-  
-  # Or headless command line
-  nvim --headless +MasonInstall\ lua_ls\ pyright\ ts_ls\ html\ cssls +qall
+  NIKAVIM_OPEN_MASON=1 ./setup.sh
   ```
+  Use the package names shown by Mason. lspconfig server identifiers and Mason
+  registry package names are not always identical.
 
-- [ ] **Install formatters** (optional):
-  - In Mason: install `stylua`, `black`, `prettier`
+- [ ] **Install formatters and linters**:
+  - Lua: `stylua`, `luacheck`
+  - Python: `black`, `isort`, `pylint`
+  - JavaScript/TypeScript: `prettier`, `eslint_d`
+  - Markdown: `prettier`, `markdownlint`
+  - Verify availability with `:ConformInfo` and `:checkhealth nikavim`
 
 - [ ] **Test LSP**:
   - Create `test.lua`
@@ -79,6 +85,10 @@ Complete this checklist after installing NikaVim.
 
 ### Copilot AI
 
+- [ ] Enable the optional AI integrations:
+  ```bash
+  NIKAVIM_ENABLE_AI=1 nvim
+  ```
 - [ ] Authenticate: `:Copilot setup`
 - [ ] Accept suggestion in insert mode: `<M-l>`
 - [ ] Open chat panel: `<Space>ac`
@@ -133,7 +143,7 @@ Complete this checklist after installing NikaVim.
 | LSP not working | `:LspInfo` + `:checkhealth` |
 | Completion not working | Install LSP server in Mason |
 | Formatting not working | Install formatter in Mason |
-| Debugger not starting | `:DapInstall` and check `lua/plugins/debug.lua` |
+| Debugger not starting | Install the required adapter through your project toolchain or Mason, then check `lua/plugins/debug.lua` |
 | Tests not running | Check test adapter in `lua/plugins/test.lua` |
 | Terminal not opening | Check `lua/plugins/terminal.lua` |
 | Copilot not responding | `:Copilot setup` to authenticate |
@@ -154,6 +164,12 @@ Complete this checklist after installing NikaVim.
 - [ ] Debugger works (`<Space>db`, `<Space>dc`)
 - [ ] Test runner works (`<Space>tr`)
 - [ ] All keybindings from [KEYMAPS.md](./KEYMAPS.md) are functional
+- [ ] `:checkhealth nikavim` has no core errors
+- [ ] A clean headless startup completes without errors
+
+NikaVim should not be considered IDE-ready until the core checks above pass.
+Optional integrations such as Copilot, Octo, databases, REST requests, and
+debug adapters may require separate credentials, binaries, or project tooling.
 
 ---
 

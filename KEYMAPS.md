@@ -1,6 +1,6 @@
 # Keymaps Quick Reference
 
-## Basic Navigation & Editing
+## ✏️ Basic Navigation & Editing
 | Keybind | Action |
 |---------|--------|
 | `jk` | Exit insert mode |
@@ -9,7 +9,7 @@
 | `<leader>q` | Quit all |
 | `<Esc>` | Clear search highlight |
 
-## Split Navigation & Management
+## 🪟 Split Navigation & Management
 | Keybind | Action |
 |---------|--------|
 | `<C-h>` | Move to left split |
@@ -18,14 +18,14 @@
 | `<C-k>` | Move to upper split |
 | `<C-Up/Down/Left/Right>` | Resize split |
 
-## Buffer Management
+## 📑 Buffer Management
 | Keybind | Action |
 |---------|--------|
 | `<Tab>` | Next buffer |
 | `<S-Tab>` | Previous buffer |
 | `<leader>bd` | Delete buffer |
 
-## Fuzzy Finding (Telescope)
+## 🔎 Fuzzy Finding (Telescope)
 | Keybind | Action |
 |---------|--------|
 | `<leader>ff` | Find files |
@@ -35,13 +35,13 @@
 | `<leader>fh` | Help tags |
 | `<leader>fc` | Commands |
 
-## File Explorer
+## 📁 File Explorer
 | Keybind | Action |
 |---------|--------|
 | `<C-n>` | Toggle explorer |
 | `<leader>e` | Focus explorer |
 
-## LSP (Language Server)
+## 🧠 LSP (Language Server)
 | Keybind | Action |
 |---------|--------|
 | `K` | Hover documentation |
@@ -55,7 +55,7 @@
 | `<F3>` | Format code |
 | `<F4>` | Code actions |
 
-## Completion & Snippets
+## ✨ Completion & Snippets
 | Keybind | Action |
 |---------|--------|
 | `<C-Space>` | Trigger completion |
@@ -83,7 +83,7 @@
 | `cs<old><new>` | Change surrounding |
 | `ds<char>` | Delete surrounding |
 
-## Integrated Terminal (toggleterm.nvim)
+## 🖥️ Integrated Terminal (toggleterm.nvim)
 | Keybind | Action |
 |---------|--------|
 | `<leader>tt` | Toggle terminal |
@@ -93,7 +93,7 @@
 | `<C-\>` | Toggle terminal (normal/terminal mode) |
 | `<Esc>` | Exit terminal mode (terminal buffer) |
 
-## AI Chat (CopilotChat)
+## 🤖 AI Chat (CopilotChat)
 | Keybind | Action |
 |---------|--------|
 | `<leader>ac` | Toggle Copilot Chat panel |
@@ -107,7 +107,7 @@
 | `<leader>zz` | Toggle Zen mode (distraction-free) |
 | `<leader>zt` | Toggle Twilight (dim inactive areas) |
 
-## Session Management
+## 💾 Session Management
 | Keybind | Action |
 |---------|--------|
 | `<leader>Ss` | Save current session |
@@ -121,7 +121,7 @@
 | `<leader>no` | Toggle Navbuddy (alternative) |
 | (breadcrumb) | LSP breadcrumbs in statusline (auto) |
 
-## Tasks (Overseer)
+## 🧰 Tasks (Overseer)
 | Keybind | Action |
 |---------|--------|
 | `<leader>rr` | Run task |
@@ -130,14 +130,14 @@
 | `<leader>rq` | Quick action on task |
 | `<leader>ro` | Open task output |
 
-## REST Client
+## 🌐 REST Client
 | Keybind | Action |
 |---------|--------|
 | `<leader>Rt` | Run current REST request (`.http` files) |
 | `<leader>Rl` | Re-run last request |
 | `<leader>Rp` | Preview cURL command |
 
-## Database (vim-dadbod)
+## 🗄️ Database (vim-dadbod)
 | Keybind | Action |
 |---------|--------|
 | `<leader>Dc` | Open DB prompt |
@@ -156,7 +156,7 @@
 |---------|--------|
 | `<leader>kx` | Toggle screenkey (show keystrokes) |
 
-## GitHub (Octo)
+## 🐙 GitHub (Octo)
 | Keybind | Action |
 |---------|--------|
 | `<leader>gi` | List GitHub issues |
@@ -224,7 +224,7 @@
 |---------|--------|
 | `J` | Move line down |
 | `K` | Move line up |
-| `<C-Space>` | Start incremental select |
+| `af` / `if` | Select function outer / inner text object |
 
 ## Editor Navigation
 | Keybind | Action |
@@ -249,7 +249,7 @@
 | `<leader>gl` | Git log |
 | `<leader>gs` | Git status |
 
-## Debugging (DAP)
+## 🐞 Debugging (DAP)
 | Keybind | Action |
 |---------|--------|
 | `<leader>db` | Toggle breakpoint |

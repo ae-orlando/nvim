@@ -1,6 +1,9 @@
 return {
   {
     "github/copilot.vim",
+    cond = function()
+      return vim.env.NIKAVIM_ENABLE_AI == "1"
+    end,
     event = "InsertEnter",
     config = function()
       vim.g.copilot_enabled = true

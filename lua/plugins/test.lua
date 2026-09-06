@@ -20,7 +20,7 @@ return {
           }),
           require("neotest-plenary"),
           require("neotest-vitest"),
-          pcall(require, "neotest-gtest"),
+          require("neotest-gtest"),
         },
         icons = {
           passed = "",

@@ -4,23 +4,38 @@ The fastest path from a fresh NikaVim checkout to a usable editor.
 
 ---
 
-## 1. Open Neovim
+## 1. Verify prerequisites
+
+NikaVim requires a supported stable Neovim release, Git, a compiler or Make,
+and `ripgrep`. Install `fd` for faster file discovery. Language servers,
+formatters, linters, test runners, and debug adapters have additional
+dependencies.
+
+```bash
+nvim --version
+git --version
+rg --version
+```
+
+## 2. Open Neovim
 
 ```bash
 nvim
 ```
 
-Lazy.nvim installs plugins automatically on first launch. Wait for the `✨ NikaVim ready!` message.
+Allow Lazy.nvim to finish installing plugins, then inspect `:Lazy` for errors.
+Do not treat the startup message alone as proof that installation succeeded.
 
 ---
 
-## 2. Install Language Servers
+## 3. Install Language Servers
 
 ```vim
 :Mason
 ```
 
-Install for the languages you use:
+Install the packages shown by the Mason interface for the languages you use.
+The names below are lspconfig identifiers; Mason registry names may differ.
 
 | Language | Server |
 |----------|--------|
@@ -39,7 +54,7 @@ Close Mason with `q`.
 
 ---
 
-## 3. Try the Core Workflow
+## 4. Try the Core Workflow
 
 | Action | Key |
 |--------|-----|
@@ -56,7 +71,7 @@ Close Mason with `q`.
 
 ---
 
-## 4. Essential IDE Features
+## 5. Essential IDE Features
 
 ### Integrated Terminal
 
@@ -103,6 +118,9 @@ Close Mason with `q`.
 | Accept Copilot suggestion | `<M-l>` |
 | Next suggestion | `<M-]>` |
 
+AI integrations are opt-in. Start Neovim with `NIKAVIM_ENABLE_AI=1` and
+authenticate Copilot before using these mappings.
+
 ### Navigation
 
 | Action | Key |
@@ -115,7 +133,7 @@ Close Mason with `q`.
 
 ---
 
-## 5. Visual Features
+## 6. Visual Features
 
 | Action | Key |
 |--------|-----|
@@ -127,11 +145,10 @@ Close Mason with `q`.
 
 ---
 
-## 6. Install Formatters and Linters
+## 7. Install Formatters and Linters
 
-```vim
-:Mason
-```
+Use `:Mason` to install the tools listed below, or install them through the
+language ecosystem used by your project.
 
 | Language | Formatter | Linter |
 |----------|-----------|--------|
@@ -140,11 +157,28 @@ Close Mason with `q`.
 | JavaScript / TypeScript | `prettier` | `eslint_d` |
 | Markdown | `prettier` | `markdownlint` |
 
-Formatting runs on save when a formatter is available. Manual format: `<F3>`.
+Formatting is controlled by the configured Conform policy. Verify the current
+state with `:ConformInfo`; manual format is `<F3>`. Do not assume a formatter is
+available until its executable is installed.
 
 ---
 
-## 7. Next Steps
+## 8. Validate the Installation
+
+Run these checks after installation:
+
+```vim
+:checkhealth nikavim
+:Lazy
+:Mason
+:LspInfo
+```
+
+Open a representative project and verify completion, hover, definition,
+diagnostics, formatting, search, terminal, and Git workflows before relying on
+the distribution for daily work.
+
+## 9. Next Steps
 
 - Read [KEYMAPS.md](./KEYMAPS.md) for the full keymap reference (80+ bindings)
 - Read [SETUP.md](./SETUP.md) for a complete first-time checklist
@@ -155,8 +189,8 @@ Formatting runs on save when a formatter is available. Manual format: `<F3>`.
 ## 🔍 Common First Checks
 
 ```vim
-:checkhealth   " Check for issues
-:Lazy          " Plugin manager
-:Mason         " Tool installer
-:LspInfo       " Active language servers
+:checkhealth nikavim
+:Lazy
+:Mason
+:LspInfo
 ```

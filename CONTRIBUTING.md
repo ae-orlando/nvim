@@ -28,8 +28,8 @@ We welcome contributions! Here's how to contribute:
 
 3. **Test your changes**:
    ```bash
-   nvim --version  # Verify Neovim compatibility
-   nvim -u init.lua -c "checkhealth"  # Check health
+   nvim --version
+   nvim --headless -u init.lua "+checkhealth nikavim" +qa
    ```
 
 ## Commit Guidelines
@@ -65,13 +65,16 @@ Before submitting:
 
 1. **Test with clean startup**:
    ```bash
-   nvim --noplugin -u init.lua
+   nvim --headless -u init.lua +qa
    ```
 
 2. **Verify no errors**:
    ```bash
-   nvim -c "checkhealth" -c "qa"
+   nvim --headless -u init.lua "+checkhealth nikavim" +qa
    ```
+
+   Also inspect `:messages` in an interactive session and confirm that
+   `vim.v:errmsg` is empty after startup.
 
 3. **Test your specific feature**:
    - Open a file and verify functionality works
@@ -82,6 +85,11 @@ Before submitting:
    ```bash
    nvim --startuptime startup.log && tail startup.log
    ```
+
+5. **Validate the plugin graph**:
+   - Every declared plugin must be represented in `lazy-lock.json`.
+   - Plugin installation must succeed from an empty Neovim data directory.
+   - Do not hide configuration errors with broad `pcall` calls.
 
 ## Pull Request Process
 
@@ -147,7 +155,8 @@ What actually happens
 
 - Update README.md if adding new features
 - Add examples for complex features
-- Keep language clear and concise
+- Document required external tools and optional integrations
+- Keep feature claims consistent with tested behavior
 - Link to relevant external resources
 
 ## License

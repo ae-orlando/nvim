@@ -12,6 +12,10 @@ return {
 
       dapui.setup()
       require("nvim-dap-virtual-text").setup()
+      require("mason-nvim-dap").setup({
+        automatic_installation = false,
+        ensure_installed = {},
+      })
 
       dap.listeners.after.event_initialized["dapui_config"] = dapui.open
       dap.listeners.before.event_terminated["dapui_config"] = dapui.close
@@ -43,12 +47,10 @@ return {
 
   {
     "jay-babu/mason-nvim-dap.nvim",
-    dependencies = { "williamboman/mason.nvim", "mfussenegger/nvim-dap" },
-    config = function()
-      require("mason-nvim-dap").setup({
-        ensure_installed = { "python", "js", "codelldb" },
-        automatic_installation = true,
-      })
-    end,
+    dependencies = {
+      "williamboman/mason.nvim",
+      "mfussenegger/nvim-dap",
+    },
   },
+
 }

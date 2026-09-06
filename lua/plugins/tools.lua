@@ -13,6 +13,7 @@ return {
     },
     config = function()
       require("rest-nvim").setup({
+        rocks = { enabled = false },
         result_split_in_place = false,
         skip_ssl_verification = false,
         encode_url = true,

@@ -5,8 +5,8 @@
 </p>
 
 <p align="center">
-  <strong>A blazing-fast, modular Neovim distribution for everyday development.</strong><br>
-  39 features · 30 plugin modules · ~130 ms startup · Full IDE
+     <strong>A modular Neovim development environment for everyday programming.</strong><br>
+     IDE-oriented workflows with explicit installation and validation requirements
 </p>
 
 <p align="center">
@@ -45,6 +45,7 @@
 
 - [Features](#-features)
 - [Installation](#-installation)
+- [IDE Readiness](#-ide-readiness)
 - [Project Layout](#-project-layout)
 - [Essential Keymaps](#-essential-keymaps)
 - [Common Tasks](#-common-tasks)
@@ -60,12 +61,12 @@
 
 | Area | What's included |
 |------|----------------|
-| **Package management** | Lazy.nvim with smart lazy-loading |
-| **Language servers** | Mason-managed: `lua_ls`, `pyright`, `ts_ls`, `html`, `cssls`, `jsonls`, `yamlls`, `bashls`, `clangd`, `rust_analyzer` |
+| **Package management** | Lazy.nvim with lazy-loading and a lockfile |
+| **Language servers** | LSP configurations for Lua, Python, JavaScript/TypeScript, HTML, CSS, JSON, YAML, Bash, C/C++, and Rust |
 | **Completion** | nvim-cmp + LuaSnip + friendly-snippets + buffer/path/LSP sources |
-| **Formatting** | conform.nvim (auto-format on save, 500 ms debounce) |
+| **Formatting** | conform.nvim with configurable format-on-save |
 | **Linting** | nvim-lint (`pylint`, `eslint_d`, `markdownlint`, `luacheck`) |
-| **Syntax highlighting** | Tree-sitter (14 languages, text objects, incremental selection) |
+| **Syntax highlighting** | Tree-sitter (14 languages, text objects, and structural navigation) |
 
 ### 🔍 Navigation & Search
 
@@ -121,8 +122,11 @@
 
 | Feature | Plugin | Keybind |
 |---------|--------|---------|
-| Code suggestions | GitHub Copilot | `<M-l>` accept |
-| AI chat | CopilotChat.nvim | `<Space>ac` |
+| Code suggestions | GitHub Copilot (opt-in) | `<M-l>` accept |
+| AI chat | CopilotChat.nvim (opt-in) | `<Space>ac` |
+
+Enable the optional AI integrations with `NIKAVIM_ENABLE_AI=1 nvim`. They also
+require Copilot authentication and should not be necessary for core IDE use.
 
 ### 🎨 Visual
 
@@ -173,8 +177,8 @@ mv ~/.local/share/nvim{,.bak}   # optional
 mv ~/.local/state/nvim{,.bak}   # optional
 mv ~/.cache/nvim{,.bak}         # optional
 
-# 2. Clone the starter
-git clone https://github.com/ae-orlando/nikavim-starter.git ~/.config/nvim
+# 2. Clone NikaVim
+git clone https://github.com/ae-orlando/NikaVim.git ~/.config/nvim
 
 # 3. Remove the starter's git history
 rm -rf ~/.config/nvim/.git
@@ -183,7 +187,17 @@ rm -rf ~/.config/nvim/.git
 nvim
 ```
 
-Lazy.nvim installs all plugins automatically on first launch. Wait for the `✨ NikaVim ready!` message.
+Start Neovim and allow Lazy.nvim to install the pinned plugins. Review any errors in `:Lazy` before using the distribution for development.
+
+For a clean, non-interactive installation check, use isolated XDG directories:
+
+```bash
+XDG_CONFIG_HOME="$(pwd)/.test-config" \
+XDG_DATA_HOME="$(pwd)/.test-data" \
+XDG_STATE_HOME="$(pwd)/.test-state" \
+XDG_CACHE_HOME="$(pwd)/.test-cache" \
+nvim --headless -u "$PWD/init.lua" "+Lazy! sync" +qa
+```
 
 ### Install Language Servers
 
@@ -191,12 +205,48 @@ Lazy.nvim installs all plugins automatically on first launch. Wait for the `✨ 
 :Mason
 ```
 
-Recommended first installs:
+Install language servers from Mason using the package names shown by `:Mason`.
+The names used by `nvim-lspconfig` are server identifiers, not necessarily Mason
+registry package names. Verify the exact package name in the Mason UI before using
+headless installation commands.
 
-```bash
-nvim --headless +MasonInstall\ lua_ls\ pyright\ ts_ls\ html\ cssls\ jsonls\ yamlls +qa
-```
+Recommended servers:
+Use `:Mason` to install the servers and tools required for your languages.
+Do not assume that an lspconfig server identifier is a valid Mason package name.
 
+### External Tools
+
+The core editor requires Git, a C compiler or Make for native plugins, and
+`ripgrep` for live grep. `fd` improves file discovery. Language workflows also
+require the tools used by their servers, formatters, linters, test runners, and
+debug adapters. Missing optional tools must not prevent Neovim from starting.
+
+Common examples include:
+
+| Workflow | External tools |
+|----------|----------------|
+| Lua | `lua-language-server`, `stylua`, `luacheck` |
+| Python | `pyright`, `black`, `isort`, `pylint`, a Python environment |
+| JavaScript / TypeScript | Node.js, `prettier`, `eslint_d` |
+| GitHub integration | GitHub CLI (`gh`) and authentication |
+| Database integration | Database client or driver required by the connection |
+
+### IDE Readiness
+
+NikaVim is an IDE-oriented configuration, but it should only be called
+IDE-ready when a clean installation and the core workflows pass validation.
+The readiness gate is:
+
+- No startup errors on a supported stable Neovim release.
+- Plugin installation succeeds from an empty data directory.
+- `:checkhealth nikavim` reports no core errors.
+- Completion, LSP navigation, diagnostics, formatting, and linting work.
+- Search, file browsing, terminal, Git, sessions, testing, and debugging work
+     or clearly report unavailable optional dependencies.
+- CI passes Lua formatting, static checks, startup, health, and lockfile checks.
+
+Until those checks pass, treat the configuration as actively developed rather
+than a production-ready IDE distribution.
 ---
 
 ## 📁 Project Layout
@@ -209,7 +259,12 @@ nvim --headless +MasonInstall\ lua_ls\ pyright\ ts_ls\ html\ cssls\ jsonls\ yaml
 │   ├── core/
 │   │   ├── init.lua         # Core loader
 │   │   ├── options.lua      # Editor options
-│   │   └── keymaps.lua      # Global keymaps
+│   │   ├── keymaps.lua      # Global keymaps
+│   │   ├── autocmds.lua     # Autocommands
+│   │   ├── commands.lua     # User commands
+│   │   └── health.lua       # Health implementation
+│   ├── health/
+│   │   └── nikavim.lua      # :checkhealth nikavim provider
 │   └── plugins/             # 30 feature modules
 │       ├── init.lua         # Plugin registry
 │       ├── ui.lua           # Theme, statusline, explorer, dashboard
@@ -375,7 +430,7 @@ require("tokyonight").setup({ style = "storm" })
 | LSP not attached | `:LspInfo` + `:Mason` |
 | Completion silent | Install the LSP server in Mason |
 | Formatting not working | Install formatter in Mason; check `lua/plugins/formatting.lua` |
-| Debugger not starting | Check `:DapInstall` and `lua/plugins/debug.lua` |
+| Debugger not starting | Install the adapter through your project toolchain or Mason, then check `lua/plugins/debug.lua` |
 | Tests not running | Ensure test adapter is configured in `lua/plugins/test.lua` |
 | Telescope slow | Run `:Telescope find_files` in a smaller directory |
 | Terminal not opening | Check `lua/plugins/terminal.lua` config |
