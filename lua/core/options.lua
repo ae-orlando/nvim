@@ -1,7 +1,10 @@
 local opt = vim.opt
-
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0  
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+
+vim.opt.wrap = false
 
 -- ============================================
 -- Visual Settings
@@ -49,5 +52,24 @@ opt.splitbelow = true          -- Horizontal splits go down
 -- ============================================
 opt.timeoutlen = 300           -- Faster key sequences
 opt.updatetime = 250           -- Faster CursorHold
+
+-- Register custom YAML filetypes so LSP checkhealth recognizes them
+vim.filetype.add({
+  extension = {
+    yml = "yaml",
+    yaml = "yaml",
+  },
+  filename = {
+    ["docker-compose.yml"] = "yaml.docker-compose",
+    ["docker-compose.yaml"] = "yaml.docker-compose",
+    [".gitlab-ci.yml"] = "yaml.gitlab",
+  },
+  pattern = {
+    [".*/templates/.*%.yaml"] = "yaml.helm-values",
+    [".*/templates/.*%.yml"] = "yaml.helm-values",
+    ["values%.yaml"] = "yaml.helm-values",
+    ["values%.yml"] = "yaml.helm-values",
+  },
+})
 
 print("⚙️  Options loaded")
